@@ -1,5 +1,5 @@
-import {  GalleryActionCreators } from './state/action-creators';
+import { GalleryActionCreators } from './gallery-state/action-creators';
 
 export const allActionCreators = {
-  ... GalleryActionCreators,
+  ...GalleryActionCreators,
 };
