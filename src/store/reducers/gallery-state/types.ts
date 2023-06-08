@@ -1,8 +1,9 @@
-import { TAlbums, TPhotos } from '../../../types/types';
+import { TAlbums, TPhotos, TUser } from '../../../types/types';
 
 export interface GalleryState {
   albums: TAlbums[];
   photos: TPhotos[];
+  users: TUser[];
   isLoading: boolean;
   error: string;
 }
@@ -10,6 +11,7 @@ export interface GalleryState {
 export enum GalleryActionEnum {
   SET_ALBUMS = 'SET_ALBUMS',
   SET_PHOTOS = 'SET_PHOTOS',
+  SET_USERS = 'SET_USERS',
   SET_FETCH_ERROR = 'SET_FETCH_ERROR',
   SET_IS_LOADING = 'SET_IS_LOADING',
 }
@@ -24,6 +26,10 @@ export interface SetPhotosAction {
   payload: TPhotos[];
 }
 
+export interface SetUsersAction {
+  type: GalleryActionEnum.SET_USERS;
+  payload: TUser[];
+}
 export interface SetErrorAction {
   type: GalleryActionEnum.SET_FETCH_ERROR;
   payload: string;
@@ -36,6 +42,7 @@ export interface SetIsLoadingAction {
 
 export type GalleryAction =
   | SetAlbumsAction
+  | SetUsersAction
   | SetPhotosAction
   | SetErrorAction
   | SetIsLoadingAction;

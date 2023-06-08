@@ -5,9 +5,10 @@ import {
   SetAlbumsAction,
   GalleryActionEnum,
   SetPhotosAction,
+  SetUsersAction,
 } from './types';
 
-import { TAlbums, TPhotos } from '../../../types/types';
+import { TAlbums, TPhotos, TUser } from '../../../types/types';
 import GalleryServices from '../../../services/gallery-services';
 
 export const GalleryActionCreators = {
@@ -20,6 +21,12 @@ export const GalleryActionCreators = {
     type: GalleryActionEnum.SET_PHOTOS,
     payload: photos,
   }),
+
+  setUsers: (users: TUser[]): SetUsersAction => ({
+    type: GalleryActionEnum.SET_USERS,
+    payload: users,
+  }),
+
   setIsLoading: (payload: boolean): SetIsLoadingAction => ({
     type: GalleryActionEnum.SET_IS_LOADING,
     payload,
@@ -30,26 +37,48 @@ export const GalleryActionCreators = {
   }),
 
   fetchAlbums: () => async (dispatch: AppDispatch) => {
+    dispatch(GalleryActionCreators.setIsLoading(true));
     try {
-      dispatch(GalleryActionCreators.setIsLoading(true));
       const response = await GalleryServices.fetchAlbums();
       dispatch(GalleryActionCreators.setAlbums(response.data));
     } catch (e: any) {
-      dispatch(GalleryActionCreators.setError(e.response?.data?.message));
+      dispatch(
+        GalleryActionCreators.setError('Произошла ошибка при загрузке данных')
+      );
+    } finally {
+      dispatch(GalleryActionCreators.setIsLoading(false));
+    }
+  },
+
+  fetchUsers: () => async (dispatch: AppDispatch) => {
+    dispatch(GalleryActionCreators.setIsLoading(true));
+    try {
+      const response = await GalleryServices.fetchUsers();
+      dispatch(GalleryActionCreators.setUsers(response.data));
+    } catch (e: any) {
+      dispatch(
+        GalleryActionCreators.setError('Произошла ошибка при загрузке данных')
+      );
     } finally {
       dispatch(GalleryActionCreators.setIsLoading(false));
     }
   },
 
   fetchPhotos: () => async (dispatch: AppDispatch) => {
-    try {
-      dispatch(GalleryActionCreators.setIsLoading(true));
-      const response = await GalleryServices.fetchPhotos();
-      dispatch(GalleryActionCreators.setPhotos(response.data));
-    } catch (e: any) {
-      dispatch(GalleryActionCreators.setError(e.response?.data?.message));
-    } finally {
-      dispatch(GalleryActionCreators.setIsLoading(false));
-    }
+    dispatch(GalleryActionCreators.setIsLoading(true));
+    setTimeout(async () => {
+      await GalleryServices.fetchPhotos()
+        .then((response) =>
+          dispatch(GalleryActionCreators.setPhotos(response.data))
+        )
+        .catch(() => {
+          dispatch(
+            GalleryActionCreators.setError(
+              'Произошла ошибка при загрузке данных'
+            )
+          );
+        })
+        .finally(() => dispatch(GalleryActionCreators.setIsLoading(false)));
+    }, 500);
   },
 };

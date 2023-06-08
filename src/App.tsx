@@ -1,13 +1,13 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import Start from './pages/Start';
+import Photos from './pages/Photos';
 
 const App = function (): JSX.Element {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Start />} />
+        <Route path="/" element={<Photos />} />
       </Routes>
     </>
   );

@@ -3,11 +3,12 @@ import { GalleryAction, GalleryState, GalleryActionEnum } from './types';
 const initialState: GalleryState = {
   albums: [],
   photos: [],
+  users: [],
   error: '',
   isLoading: false,
 };
 
-export default function accountReducer(
+export default function GalleryReducer(
   state = initialState,
   action: GalleryAction
 ): GalleryState {
@@ -16,8 +17,10 @@ export default function accountReducer(
       return { ...state, albums: action.payload };
     case GalleryActionEnum.SET_PHOTOS:
       return { ...state, photos: action.payload };
+    case GalleryActionEnum.SET_USERS:
+      return { ...state, users: action.payload };
     case GalleryActionEnum.SET_FETCH_ERROR:
-      return { ...state, error: action.payload, isLoading: false };
+      return { ...state, error: action.payload };
     case GalleryActionEnum.SET_IS_LOADING:
       return { ...state, isLoading: action.payload };
     default:
