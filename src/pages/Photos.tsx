@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { withLayout } from '../layout/Layout';
 import {
   CircularProgress,
@@ -12,17 +12,22 @@ import { useActions, useTypedSelector } from '../hooks';
 import classes from './style.module.scss';
 import { Loader, PhotoCard } from '../components';
 import InfoIcon from '@mui/icons-material/Info';
+import { TUser } from '../types/types';
 
 const Photos = () => {
   const { isLoading, albums, photos, users } = useTypedSelector(
     (state) => state.GalleryState
   );
   const { fetchPhotos, fetchAlbums, fetchUsers } = useActions();
+  // const [page, setPage] = useState(0);
+  // const limit = 30;
+  // const parentRef = useRef(null);
+  // const childRef = useRef(null);
 
   useEffect(() => {
-    fetchPhotos();
-    fetchAlbums();
+    fetchPhotos(0, 100);
     fetchUsers();
+    fetchAlbums();
   }, []);
 
   if (isLoading) {
@@ -40,6 +45,7 @@ const Photos = () => {
           )}
         />
       ))}
+      <div style={{ height: 20 }} />
     </div>
   );
 };
